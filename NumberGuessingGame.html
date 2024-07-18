@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            font: 1em sans-serif;
+        }
+        body{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            width: 100vw;
+            background: linear-gradient(to bottom, #87e0fd 0%,#53cbf1 40%,#05abe0 100%);
+        }
+        .container{
+            width: 400px;
+            height: 400px;
+            background-color: #ccc;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-radius: 3%;
+        }
+        #restartScreen{
+            display: none;
+            opacity: 0;
+            position: absolute;
+            right: 440px;
+            width: 400px;
+            height: 400px;
+            background-color: rgba(0, 0, 0, 0);  
+            backdrop-filter: blur(5px);
+            border-radius: 3%;
+            transition: opacity 5s ease-in;
+        }
+        #rSestartScreen.active{
+            display: block;
+            opacity: 1;
+        }
+       h2{
+        font-size: 20px;
+        font-weight: 600;
+       }
+
+    li{
+        list-style: none;
+
+    }
+    button{
+        width: 100px;
+        height: 30px;
+        background-color: rgb(242, 23, 242);
+        outline: none;
+        border: none;
+        border-radius: 10px;
+    }
+    input{
+        width: 250px;
+        height: 40px;
+        border-radius: 10px;
+        border: none;
+    }    
+    #restart{
+        position: absolute;
+        top: 50%;
+        right: 50%;
+        left: 50%;
+        bottom: 50%;
+        transform: translate(-50%, -50%);
+    }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2 id="heading"></h2>
+        <br>
+        <input type="text" name="" id="input">
+        <br>
+        <button id="btn" onclick="">Guess</button>
+        <br>
+        <p id="remainigGuess"></p>
+        <br>
+        <ul id="displayGuess"></ul>
+    </div>
+    <div id="restartScreen">
+        <button id="restart">Restart</button>
+    </div>
+    <script>
+     let heading = document.getElementById("heading");
+     let input = document.getElementById("input");
+     let btn = document.getElementById("btn");
+     let max = 10;
+     let min = 1;
+     let random = Math.floor(Math.random() * (max - min + 1) + min);
+     let count = 0;
+     let guesses = document.getElementById("guesses");
+     let remainigGuess = document.getElementById("remainigGuess");
+     let displayGuess = document.getElementById("displayGuess");
+     let restartBtn = document.getElementById("restart");
+     let restartScreen = document.getElementById("restartScreen");
+     
+     heading.textContent = `Enter the number between ${min} and ${max}`;
+     btn.addEventListener("click", function(){
+        let guess = Number(input.value);
+         if(guess === random){
+             heading.textContent = "You won the game";
+             btn.disabled = true;
+         }
+         else if(guess > random){
+             heading.textContent = "You entered a higher number";
+         }
+         else if(guess < random){
+             heading.textContent = "You entered a lower number";
+         }
+         count++;
+         if (count >= 5){
+            heading.textContent = "You lost the game";
+            btn.disabled = true;
+            restartScreen.classList.add('active');
+         }
+         remainigGuess.textContent = `You have ${5 - count} chances remaining`;
+        const li = document.createElement("li");
+         li.textContent = `You guessed ${guess}`;
+         displayGuess.appendChild(li);
+        input.value = '';
+        input.focus(); 
+     });
+     restartBtn.addEventListener("click", function(){
+        location.reload();
+        });
+
+
+    </script>
+</body>
+</html>
